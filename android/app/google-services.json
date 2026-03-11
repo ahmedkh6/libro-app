@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "697463602741",
+    "project_id": "blogproject-d785e",
+    "storage_bucket": "blogproject-d785e.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:697463602741:android:e829518089ec414669bb7c",
+        "android_client_info": {
+          "package_name": "com.antigravity.libro.libro"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "697463602741-95mbr43n45cf4u17a803kt0m17jiqsni.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.antigravity.libro.libro",
+            "certificate_hash": "2d1b4cdaf2801f06aa4b0641733d83e9f954f4c5"
+          }
+        },
+        {
+          "client_id": "697463602741-nkue4ldmkf3i1144f6h2q81ur8kn3kb9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDZ__Asx2IopK2QqSpANzoTlC38Bdbq_-w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "697463602741-nkue4ldmkf3i1144f6h2q81ur8kn3kb9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
