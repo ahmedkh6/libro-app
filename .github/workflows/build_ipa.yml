@@ -20,11 +20,17 @@ jobs:
       - name: Get dependencies
         run: flutter pub get
 
-      - name: Build IPA (Unsigned)
-        run: flutter build ipa --no-codesign
+      - name: Build iOS (No codesign)
+        run: flutter build ios --no-codesign --release
 
+      - name: Package IPA
+        run: |
+          mkdir -p Payload
+          cp -r build/ios/iphoneos/Runner.app Payload/
+          zip -r Libro.ipa Payload
+          
       - name: Upload IPA Artifact
         uses: actions/upload-artifact@v4
         with:
           name: libro-unsigned-ipa
-          path: build/ios/ipa/*.ipa
+          path: Libro.ipa
