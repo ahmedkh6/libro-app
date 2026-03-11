@@ -16,7 +16,6 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
-          flutter-version: '3.29.0' # Matching the current stable version or spec
 
       - name: Get dependencies
         run: flutter pub get
