@@ -31,6 +31,23 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
     }
   }
 
+  Future<void> _signInWithApple() async {
+    setState(() => _isLoading = true);
+    try {
+      final authService = ref.read(authServiceProvider);
+      await authService.signInWithApple();
+      if (mounted) context.go('/library');
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Apple sign-in failed: ${e.toString()}')),
+        );
+      }
+    } finally {
+      if (mounted) setState(() => _isLoading = false);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -106,6 +123,39 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                             const SizedBox(width: 12),
                             const Text('Continue with Google', style: TextStyle(
                               fontSize: 16, fontWeight: FontWeight.w500, color: AppTheme.textPrimary,
+                            )),
+                          ],
+                        ),
+                ),
+              ),
+
+              const SizedBox(height: 16),
+
+              // Apple Sign In Button
+              SizedBox(
+                width: double.infinity,
+                height: 60,
+                child: ElevatedButton(
+                  onPressed: _isLoading ? null : _signInWithApple,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.black,
+                    foregroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                    padding: const EdgeInsets.symmetric(horizontal: 24),
+                    elevation: 0,
+                  ),
+                  child: _isLoading
+                      ? const SizedBox(
+                          width: 24, height: 24,
+                          child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
+                        )
+                      : const Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.apple, size: 24),
+                            SizedBox(width: 12),
+                            Text('Continue with Apple', style: TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.w600,
                             )),
                           ],
                         ),

@@ -2,6 +2,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
+import 'dart:convert';
+import 'package:crypto/crypto.dart';
 
 /// Stream provider that listens to Firebase auth state changes
 final authStateProvider = StreamProvider<User?>((ref) {
@@ -12,13 +15,36 @@ final authStateProvider = StreamProvider<User?>((ref) {
 final authServiceProvider = Provider<AuthService>((ref) {
   return AuthService();
 });
-
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   bool _googleInitialized = false;
 
   User? get currentUser => _auth.currentUser;
   bool get isSignedIn => _auth.currentUser != null;
+
+  /// Sign in with Apple
+  Future<UserCredential?> signInWithApple() async {
+    try {
+      final appleCredential = await SignInWithApple.getAppleIDCredential(
+        scopes: [
+          AppleIDAuthorizationScopes.email,
+          AppleIDAuthorizationScopes.fullName,
+        ],
+      );
+
+      final OAuthCredential credential = OAuthProvider('apple.com').credential(
+        idToken: appleCredential.identityToken,
+        accessToken: appleCredential.authorizationCode,
+      );
+
+      final userCredential = await _auth.signInWithCredential(credential);
+      debugPrint('[Libro Auth] Apple sign-in success: ${userCredential.user?.email}');
+      return userCredential;
+    } catch (e) {
+      debugPrint('[Libro Auth] Apple sign-in error: $e');
+      rethrow;
+    }
+  }
 
   /// Sign in with Google (google_sign_in v7 API)
   Future<UserCredential?> signInWithGoogle() async {
